@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import IRestaurante from '../../../interfaces/IRestaurante';
-import axios from 'axios';
 import {
   Paper,
   TableContainer,
@@ -12,14 +11,14 @@ import {
   Button,
 } from '@mui/material';
 import { Link } from 'react-router-dom';
+import http from '../../../http';
 
 const AdminRestaurants = () => {
   const [restaurants, setRestaurants] = useState<IRestaurante[]>([]);
 
   useEffect(() => {
     async function fetchData() {
-      const URL = 'http://localhost:8000/api/v2/restaurantes/';
-      const response = await axios.get<IRestaurante[]>(URL);
+      const response = await http.get<IRestaurante[]>('restaurantes/');
       const data = response.data;
       setRestaurants(data);
     }
@@ -27,8 +26,7 @@ const AdminRestaurants = () => {
   }, []);
 
   async function deleteRestaurant(id: number) {
-    const URL = `http://localhost:8000/api/v2/restaurantes/${id}/`;
-    await axios.delete(URL);
+    await http.delete(`restaurantes/${id}/`);
     const newRestaurants = restaurants.filter((restaurant) => restaurant.id !== id);
     setRestaurants(newRestaurants);
   }

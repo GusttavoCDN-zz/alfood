@@ -33,9 +33,6 @@ const ListaRestaurantes = () => {
       const name = nome.toLowerCase();
       return name.includes(restaurant);
     });
-
-    console.log(restaurantesFilteredByName);
-
     setFilteredRestaurants(restaurantesFilteredByName);
   }, [restaurant, restaurants]);
 

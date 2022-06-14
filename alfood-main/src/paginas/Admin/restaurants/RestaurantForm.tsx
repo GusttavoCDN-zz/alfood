@@ -1,10 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { Button, TextField } from '@mui/material';
-import axios from 'axios';
+import { Box, Button, TextField, Typography } from '@mui/material';
 import { useParams } from 'react-router-dom';
 import IRestaurante from '../../../interfaces/IRestaurante';
-
-const POST_URL = 'http://localhost:8000/api/v2/restaurantes/';
+import http from '../../../http';
 
 const RestaurantForm = () => {
   const [name, setName] = useState('');
@@ -12,34 +10,47 @@ const RestaurantForm = () => {
 
   useEffect(() => {
     async function fetchData() {
-      const URL = `${POST_URL}${id}/`;
-      const response = await axios.get<IRestaurante>(URL);
+      const response = await http.get<IRestaurante>(`restaurantes/${id}/`);
       const data = response.data;
       setName(data.nome);
     }
     fetchData();
-  }, [id])
-
+  }, [id]);
 
   const handleSubmit = (event: React.MouseEvent) => {
     event.preventDefault();
-    if (id) axios.put(`${POST_URL}${id}/`, { nome: name });
-    else axios.post(POST_URL, { nome: name }).then(() => alert('Restaurante Adicionado!'))
+    if (id) http.put(`restaurantes/${id}/`, { nome: name });
+    else
+      http
+        .post('restaurantes/', { nome: name })
+        .then(() => alert('Restaurante Adicionado!'));
+      setName('');
   };
 
   return (
-    <form>
-      <TextField
-        id="standard-basic"
-        label="Standard"
-        variant="standard"
-        value={name}
-        onChange={(event) => setName(event.target.value)}
-      />
-      <Button variant="outlined" onClick={handleSubmit}>
-        Salvar
-      </Button>
-    </form>
+    <Box
+      sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+      <Typography component="h1" variant="h6">
+        Formulário de Restaurantes
+      </Typography>
+      <Box component="form">
+        <TextField
+          label="Nome do Restaurante"
+          variant="standard"
+          value={name}
+          onChange={(event) => setName(event.target.value)}
+          fullWidth
+          required
+        />
+        <Button
+          sx={{ marginTop: 1 }}
+          variant="outlined"
+          onClick={handleSubmit}
+          fullWidth>
+          Salvar
+        </Button>
+      </Box>
+    </Box>
   );
 };
 
