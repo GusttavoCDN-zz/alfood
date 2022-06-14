@@ -10,6 +10,7 @@ function App() {
       <Route path="/" element={<Home />} />
       <Route path="/restaurantes" element={<VitrineRestaurantes />} />
       <Route path="/admin/restaurants" element={<AdminRestaurants />} />
+      <Route path="/admin/restaurants/:id" element={<RestaurantForm />} />
       <Route path="/admin/restaurants/new" element={<RestaurantForm />} />
     </Routes>
   );
