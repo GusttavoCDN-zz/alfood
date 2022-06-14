@@ -36,7 +36,7 @@ const AdminRestaurants = () => {
       <TableRow key={restaurant.id}>
         <TableCell>{restaurant.nome}</TableCell>
         <TableCell>
-          <Link to={`/admin/restaurants/${restaurant.id}`}>Editar</Link>
+          <Link to={`/admin/restaurants/${restaurant.id}`}>[Editar]</Link>
         </TableCell>
         <TableCell>
           <Button
@@ -55,7 +55,7 @@ const AdminRestaurants = () => {
       <Table>
         <TableHead>
           <TableRow>
-            <TableCell>Nome</TableCell>
+            <TableCell>Restaurante</TableCell>
             <TableCell>Editar</TableCell>
             <TableCell>Excluir</TableCell>
           </TableRow>

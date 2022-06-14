@@ -24,16 +24,22 @@ const RestaurantForm = () => {
       http
         .post('restaurantes/', { nome: name })
         .then(() => alert('Restaurante Adicionado!'));
-      setName('');
+    setName('');
   };
 
   return (
     <Box
-      sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        flexGrow: 1,
+      }}
+    >
       <Typography component="h1" variant="h6">
         Formulário de Restaurantes
       </Typography>
-      <Box component="form">
+      <Box component="form" sx={{ width: '100%' }}>
         <TextField
           label="Nome do Restaurante"
           variant="standard"
@@ -42,11 +48,7 @@ const RestaurantForm = () => {
           fullWidth
           required
         />
-        <Button
-          sx={{ marginTop: 1 }}
-          variant="outlined"
-          onClick={handleSubmit}
-          fullWidth>
+        <Button sx={{ marginTop: 1 }} variant="outlined" onClick={handleSubmit} fullWidth>
           Salvar
         </Button>
       </Box>

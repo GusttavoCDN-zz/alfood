@@ -4,13 +4,7 @@ import IRestaurante from '../../interfaces/IRestaurante';
 import style from './ListaRestaurantes.module.scss';
 import Restaurante from './Restaurante';
 import { IPagination } from '../../interfaces/IPagination';
-import {
-  Button,
-  FormControl,
-  MenuItem,
-  Select,
-  TextField,
-} from '@mui/material';
+import { Button, FormControl, MenuItem, Select, TextField } from '@mui/material';
 
 const ListaRestaurantes = () => {
   const [restaurants, setRestaurants] = useState<IRestaurante[]>([]);
@@ -38,8 +32,8 @@ const ListaRestaurantes = () => {
       params: {
         search: restaurant,
         ordering: order,
-      }
-    }
+      },
+    };
     fetchData('', options);
   };
 
@@ -57,7 +51,8 @@ const ListaRestaurantes = () => {
       <FormControl
         sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'center' }}
         size="small"
-        component="form">
+        component="form"
+      >
         <TextField
           value={restaurant}
           label="Pesquise um Restaurante"
@@ -70,7 +65,8 @@ const ListaRestaurantes = () => {
           onChange={({ target }) => setOrder(target.value)}
           label="Ordem"
           variant="standard"
-          sx={{ marginRight: '1rem' }}>
+          sx={{ marginRight: '1rem' }}
+        >
           <MenuItem value="nome">nome</MenuItem>
           <MenuItem value="id">id</MenuItem>
         </Select>
@@ -81,9 +77,7 @@ const ListaRestaurantes = () => {
       {restaurants?.map((item) => (
         <Restaurante restaurante={item} key={item.id} />
       ))}
-      <Button onClick={showMoreRestaurants}>
-        {nextPage ? 'ver mais' : 'voltar'}
-      </Button>
+      <Button onClick={showMoreRestaurants}>{nextPage ? 'ver mais' : 'voltar'}</Button>
     </section>
   );
 };
