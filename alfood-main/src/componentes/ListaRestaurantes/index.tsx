@@ -1,5 +1,5 @@
-import React, { useCallback, useEffect, useState } from 'react';
-import axios from 'axios';
+import React, { useEffect, useState } from 'react';
+import axios, { AxiosRequestConfig } from 'axios';
 import IRestaurante from '../../interfaces/IRestaurante';
 import style from './ListaRestaurantes.module.scss';
 import Restaurante from './Restaurante';
@@ -14,34 +14,19 @@ import {
 
 const ListaRestaurantes = () => {
   const [restaurants, setRestaurants] = useState<IRestaurante[]>([]);
-  const [filteredRestaurants, setFilteredRestaurants] = useState<
-    IRestaurante[]
-  >([]);
   const [restaurant, setRestaurant] = useState('');
   const [nextPage, setNextPage] = useState('');
   const [previousPage, setPreviousPage] = useState('');
   const [order, setOrder] = useState('nome');
 
-  const fetchData = async (page = '') => {
+  const fetchData = async (page = '', options: AxiosRequestConfig = {}) => {
     const URL = page || 'http://localhost:8000/api/v1/restaurantes/';
-    const response = await axios.get<IPagination<IRestaurante>>(URL);
+    const response = await axios.get<IPagination<IRestaurante>>(URL, options);
     const data = response.data.results;
     setRestaurants([...data]);
-    setFilteredRestaurants([...data]);
     setNextPage(response.data.next);
     setPreviousPage(response.data.previous);
   };
-
-  const orderRestaurants = useCallback(
-    (restaurants: IRestaurante[]) => {
-      if (order === 'nome')
-        return restaurants.sort((a, b) => a[order].localeCompare(b[order]));
-      if (order === 'id')
-        return restaurants.sort((a, b) => a[order] - b[order]);
-      return restaurants;
-    },
-    [order]
-  );
 
   useEffect(() => {
     fetchData();
@@ -49,23 +34,14 @@ const ListaRestaurantes = () => {
 
   const searchRestaurants = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
-
-    const restaurantesFilteredByName = restaurants.filter(({ nome }) => {
-      const name = nome.toLowerCase();
-      return name.includes(restaurant.toLowerCase());
-    });
-
-    const restaurantsOrdered = orderRestaurants(restaurantesFilteredByName);
-    setFilteredRestaurants(restaurantsOrdered);
+    const options = {
+      params: {
+        search: restaurant,
+        ordering: order,
+      }
+    }
+    fetchData('', options);
   };
-
-  // useEffect(() => {
-  //   const restaurantesFilteredByName = restaurants.filter(({ nome }) => {
-  //     const name = nome.toLowerCase();
-  //     return name.includes(restaurant);
-  //   });
-  //   setFilteredRestaurants(restaurantesFilteredByName);
-  // }, [restaurant, restaurants]);
 
   const showMoreRestaurants = async () => {
     if (nextPage) fetchData(nextPage);
@@ -102,7 +78,7 @@ const ListaRestaurantes = () => {
           Buscar
         </Button>
       </FormControl>
-      {filteredRestaurants?.map((item) => (
+      {restaurants?.map((item) => (
         <Restaurante restaurante={item} key={item.id} />
       ))}
       <Button onClick={showMoreRestaurants}>
