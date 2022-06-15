@@ -63,7 +63,7 @@ const AdminPlates = () => {
       <Table>
         <TableHead>
           <TableRow>
-            <TableCell>Restaurante</TableCell>
+            <TableCell>Prato</TableCell>
             <TableCell>Tag</TableCell>
             <TableCell>Imagem</TableCell>
             <TableCell>Editar</TableCell>
