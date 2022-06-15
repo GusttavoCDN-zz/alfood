@@ -10,6 +10,7 @@ const RestaurantForm = () => {
 
   useEffect(() => {
     async function fetchData() {
+      if (!id) return ;
       const response = await http.get<IRestaurante>(`restaurantes/${id}/`);
       const data = response.data;
       setName(data.nome);
